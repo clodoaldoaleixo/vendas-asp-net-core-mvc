@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VendasMVC.Models;
 
 namespace VendasMVC.Migrations
 {
     [DbContext(typeof(VendasMVCContext))]
-    partial class VendasMVCContextModelSnapshot : ModelSnapshot
+    [Migration("20181122162535_NovasClasses")]
+    partial class NovasClasses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
