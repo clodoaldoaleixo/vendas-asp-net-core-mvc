@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using VendasMVC.Models;
 using VendasMVC.Data;
+using VendasMVC.Services;
 
 namespace VendasMVC
 {
@@ -42,6 +43,7 @@ namespace VendasMVC
 
             //Registra serviço no sistema de injeção de dependências da aplicação.
             services.AddScoped<SeedingService>();
+            services.AddScoped<VendedorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
