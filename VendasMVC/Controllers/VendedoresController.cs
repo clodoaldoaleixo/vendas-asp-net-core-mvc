@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using VendasMVC.Models;
 using VendasMVC.Models.ViewModels;
 using VendasMVC.Services;
+using VendasMVC.Services.Exceptions;
 
 namespace VendasMVC.Controllers
 {
@@ -32,9 +33,8 @@ namespace VendasMVC.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var departamentos = _departamento.Listar();
             VendedorViewModel vm = new VendedorViewModel();
-            vm.Departamentos = departamentos;
+            vm.Departamentos = CarregaDepartamentos();
 
             return View(vm);
         }
@@ -70,10 +70,56 @@ namespace VendasMVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id)
+        public IActionResult Details(int? id)
         {
             var obj = _servico.Pesquisar(id);
             return View(obj);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _servico.Pesquisar(id);
+
+            if(obj == null)
+            {
+                return NotFound();
+            }
+
+            VendedorViewModel vm = new VendedorViewModel();
+            vm.Departamentos = CarregaDepartamentos();
+            vm.Vendedor = obj;
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Vendedor obj)
+        {
+            try
+            {
+                _servico.Atualizar(obj);
+                return RedirectToAction("Index");
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (DbConcorrenciaException)
+            {
+                return BadRequest();
+            }
+        }
+
+        private List<Departamento> CarregaDepartamentos()
+        {
+            return _departamento.Listar();
         }
     }
 }

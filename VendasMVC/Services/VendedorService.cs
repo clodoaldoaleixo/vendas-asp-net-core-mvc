@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VendasMVC.Models;
+using VendasMVC.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace VendasMVC.Services
@@ -37,6 +38,24 @@ namespace VendasMVC.Services
             var obj = _contexto.Vendedor.Find(id);
             _contexto.Vendedor.Remove(obj);
             _contexto.SaveChanges();
+        }
+
+        public void Atualizar(Vendedor vendedor)
+        {
+            if (!_contexto.Vendedor.Any(x => x.Id == vendedor.Id))
+            {
+                throw new NotFoundException("Vendedor não encontrado");
+            }
+
+            try
+            {
+                _contexto.Vendedor.Update(vendedor);
+                _contexto.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new DbConcorrenciaException("Há outro usuário atualizando o mesmo registro.");
+            }
             
         }
     }
