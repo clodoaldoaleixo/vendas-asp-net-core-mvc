@@ -20,10 +20,23 @@ namespace VendasMVC.Services
             return _contexto.Vendedor.ToList();
         }
 
+        public Vendedor Pesquisar(int? id)
+        {
+            return _contexto.Vendedor.FirstOrDefault(x => x.Id == id);
+        }
+
         public void Gravar(Vendedor vendedor)
         {
             _contexto.Vendedor.Add(vendedor);
             _contexto.SaveChanges();
+        }
+
+        public void Deletar(int? id)
+        {
+            var obj = _contexto.Vendedor.Find(id);
+            _contexto.Vendedor.Remove(obj);
+            _contexto.SaveChanges();
+            
         }
     }
 }

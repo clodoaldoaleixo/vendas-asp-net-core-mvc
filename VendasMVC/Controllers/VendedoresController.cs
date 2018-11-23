@@ -46,5 +46,27 @@ namespace VendasMVC.Controllers
             _servico.Gravar(vendedor);
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            var obj = _servico.Pesquisar(id);
+
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int Id)
+        {
+            _servico.Deletar(Id);
+            return RedirectToAction("Index");
+
+        }
     }
 }
