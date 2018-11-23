@@ -6,17 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VendasMVC.Models;
+using VendasMVC.Models.ViewModels;
 using VendasMVC.Services;
 
 namespace VendasMVC.Controllers
 {
     public class VendedoresController : Controller
     {
-        private VendedorService _servico;
+        private readonly VendedorService _servico;
+        private readonly DepartamentoService _departamento;
 
-        public VendedoresController(VendedorService servico)
+        public VendedoresController(VendedorService servico, DepartamentoService departamento)
         {
             _servico = servico;
+            _departamento = departamento;
         }
 
         [HttpGet]
@@ -29,7 +32,11 @@ namespace VendasMVC.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var departamentos = _departamento.Listar();
+            VendedorViewModel vm = new VendedorViewModel();
+            vm.Departamentos = departamentos;
+
+            return View(vm);
         }
 
         [HttpPost]
