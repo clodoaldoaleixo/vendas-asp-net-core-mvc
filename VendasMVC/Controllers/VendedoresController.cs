@@ -19,10 +19,25 @@ namespace VendasMVC.Controllers
             _servico = servico;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             var lista = _servico.Listar();
             return View(lista);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Vendedor vendedor)
+        {
+            _servico.Gravar(vendedor);
+            return RedirectToAction("Index");
         }
     }
 }

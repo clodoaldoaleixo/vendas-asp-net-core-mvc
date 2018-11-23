@@ -19,5 +19,11 @@ namespace VendasMVC.Services
         {
             return _contexto.Vendedor.ToList();
         }
+
+        public void Gravar(Vendedor vendedor)
+        {
+            _contexto.Vendedor.Add(vendedor);
+            _contexto.SaveChanges();
+        }
     }
 }
