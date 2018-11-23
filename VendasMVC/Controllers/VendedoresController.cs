@@ -68,5 +68,12 @@ namespace VendasMVC.Controllers
             return RedirectToAction("Index");
 
         }
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var obj = _servico.Pesquisar(id);
+            return View(obj);
+        }
     }
 }

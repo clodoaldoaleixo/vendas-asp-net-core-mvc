@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VendasMVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace VendasMVC.Services
 {
@@ -17,12 +18,12 @@ namespace VendasMVC.Services
 
         public List<Vendedor> Listar()
         {
-            return _contexto.Vendedor.ToList();
+            return _contexto.Vendedor.Include("Departamento").ToList();
         }
 
         public Vendedor Pesquisar(int? id)
         {
-            return _contexto.Vendedor.FirstOrDefault(x => x.Id == id);
+            return _contexto.Vendedor.Include("Departamento").FirstOrDefault(x => x.Id == id);
         }
 
         public void Gravar(Vendedor vendedor)
