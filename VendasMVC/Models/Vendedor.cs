@@ -30,6 +30,7 @@ namespace VendasMVC.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataNascimento { get; set; }
         public double SalarioBase { get; set; }
+        public int DepartamentoId { get; set; }
         public Departamento Departamento { get; set; }
         public ICollection<Venda> Vendas { get; set; }
 
