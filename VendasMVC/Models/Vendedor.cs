@@ -25,8 +25,16 @@ namespace VendasMVC.Models
 
         public int Id { get; set; }
         public string Nome { get; set; }
+
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        [Display(Name = "Data de Nascimento")]
+        [DataType(DataType.Date)]
         public DateTime DataNascimento { get; set; }
+
+        [Display(Name = "Salário Base")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public double SalarioBase { get; set; }
         public int DepartamentoId { get; set; }
         public Departamento Departamento { get; set; }
