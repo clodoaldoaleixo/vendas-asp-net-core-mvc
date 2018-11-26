@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +55,7 @@ namespace VendasMVC.Controllers
 
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", new { mensagem = "Vendedor não encotrado" });
             }
 
             return View(obj);
@@ -105,7 +106,7 @@ namespace VendasMVC.Controllers
         {
             if (id != vendedor.Id)
             {
-                return BadRequest();
+                return Error("Id inválido");
             }
 
             try
@@ -115,12 +116,21 @@ namespace VendasMVC.Controllers
             }
             catch (NotFoundException)
             {
-                return NotFound();
+                return Error("Vendedor não encontrado.");
             }
             catch (DbConcorrenciaException)
             {
-                return NotFound();
+                return Error("Existe outro usuário acessando o mesmo registro");
             }
+        }
+
+        public IActionResult Error(string mensagem)
+        {
+            var erro = new ErrorViewModel();
+            erro.RequestId = Activity.Current == null ? HttpContext.TraceIdentifier : Activity.Current.Id;
+            erro.Mensagem = mensagem;
+
+            return View(erro);
         }
 
         private List<Departamento> CarregaDepartamentos()
