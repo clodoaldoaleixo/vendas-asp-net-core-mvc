@@ -34,9 +34,7 @@ namespace VendasMVC.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            VendedorViewModel vm = new VendedorViewModel();
-            vm.Departamentos = CarregaDepartamentos();
-
+            var vm = MontaViewModel(null);
             return View(vm);
         }
 
@@ -44,8 +42,16 @@ namespace VendasMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Vendedor vendedor)
         {
-            _servico.Gravar(vendedor);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                _servico.Gravar(vendedor);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var vm = MontaViewModel(vendedor);
+                return View(vm);
+            }
         }
 
         [HttpGet]
@@ -92,9 +98,7 @@ namespace VendasMVC.Controllers
                 return NotFound();
             }
 
-            VendedorViewModel vm = new VendedorViewModel();
-            vm.Departamentos = CarregaDepartamentos();
-            vm.Vendedor = obj;
+            var vm = MontaViewModel(obj);
 
             return View(vm);
 
@@ -104,6 +108,13 @@ namespace VendasMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Vendedor vendedor)
         {
+            //Verifica se o modelo está preenchido corretamente, seguindo os data annotations
+            if (!ModelState.IsValid)
+            {
+                var vm = MontaViewModel(vendedor);
+                return View(vm);
+            }
+
             if (id != vendedor.Id)
             {
                 return Error("Id inválido");
@@ -133,9 +144,13 @@ namespace VendasMVC.Controllers
             return View(erro);
         }
 
-        private List<Departamento> CarregaDepartamentos()
+        private VendedorViewModel MontaViewModel(Vendedor vendedor)
         {
-            return _departamento.Listar();
+            VendedorViewModel vm = new VendedorViewModel();
+            vm.Departamentos = _departamento.Listar();
+            vm.Vendedor = vendedor;
+
+            return vm;
         }
     }
 }

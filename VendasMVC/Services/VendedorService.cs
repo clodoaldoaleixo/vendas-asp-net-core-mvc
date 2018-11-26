@@ -19,7 +19,7 @@ namespace VendasMVC.Services
 
         public List<Vendedor> Listar()
         {
-            return _contexto.Vendedor.Include("Departamento").ToList();
+            return _contexto.Vendedor.Include("Departamento").OrderBy(x => x.Nome).ToList();
         }
 
         public Vendedor Pesquisar(int? id)
