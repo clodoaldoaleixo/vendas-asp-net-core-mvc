@@ -72,11 +72,17 @@ namespace VendasMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int Id)
+        public async Task<IActionResult> Delete(int Id)
         {
-            _servico.Deletar(Id);
-            return RedirectToAction("Index");
-
+            try
+            {
+                await _servico.DeletarAsync(Id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", new { mensagem = ex.Message });
+            }
         }
 
         [HttpGet]
@@ -132,13 +138,9 @@ namespace VendasMVC.Controllers
                 await _servico.AtualizarAsync(vendedor);
                 return RedirectToAction("Index");
             }
-            catch (NotFoundException)
+            catch (Exception ex)
             {
-                return Error("Vendedor não encontrado.");
-            }
-            catch (DbConcorrenciaException)
-            {
-                return Error("Existe outro usuário acessando o mesmo registro");
+                return RedirectToAction("Error", new { mensagem = ex.Message });
             }
         }
 

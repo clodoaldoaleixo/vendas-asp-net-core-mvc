@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using VendasMVC.Models;
 using VendasMVC.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using VendasMVC.Services.Exceptions;
 
 namespace VendasMVC.Services
 {
@@ -58,9 +59,16 @@ namespace VendasMVC.Services
 
         public async Task DeletarAsync(int? id)
         {
-            var obj = await _contexto.Vendedor.FindAsync(id);
-            _contexto.Vendedor.Remove(obj);
-            await _contexto.SaveChangesAsync();
+            try
+            {
+                var obj = await _contexto.Vendedor.FindAsync(id);
+                _contexto.Vendedor.Remove(obj);
+                await _contexto.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                throw new IntegridadeException("Existem vendas para esse vendedor, impossivel excluir.");
+            }
         }
 
         public void Atualizar(Vendedor vendedor)
