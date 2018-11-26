@@ -25,31 +25,34 @@ namespace VendasMVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var lista = _servico.Listar();
+            var lista = await _servico.ListarAsync();
             return View(lista);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var vm = MontaViewModel(null);
+            VendedorViewModel vm = new VendedorViewModel();
+            vm.Departamentos = await _departamento.ListarAsync();
             return View(vm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Vendedor vendedor)
+        public async Task<IActionResult> Create(Vendedor vendedor)
         {
             if (ModelState.IsValid)
             {
-                _servico.Gravar(vendedor);
+                await _servico.GravarAsync(vendedor);
                 return RedirectToAction("Index");
             }
             else
             {
-                var vm = MontaViewModel(vendedor);
+                VendedorViewModel vm = new VendedorViewModel();
+                vm.Departamentos = await _departamento.ListarAsync();
+                vm.Vendedor = vendedor;
                 return View(vm);
             }
         }
@@ -84,7 +87,7 @@ namespace VendasMVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if(id == null)
             {
@@ -98,7 +101,9 @@ namespace VendasMVC.Controllers
                 return NotFound();
             }
 
-            var vm = MontaViewModel(obj);
+            VendedorViewModel vm = new VendedorViewModel();
+            vm.Departamentos = await _departamento.ListarAsync();
+            vm.Vendedor = obj;
 
             return View(vm);
 
@@ -106,12 +111,14 @@ namespace VendasMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Vendedor vendedor)
+        public async Task<IActionResult> Edit(int id, Vendedor vendedor)
         {
             //Verifica se o modelo está preenchido corretamente, seguindo os data annotations
             if (!ModelState.IsValid)
             {
-                var vm = MontaViewModel(vendedor);
+                VendedorViewModel vm = new VendedorViewModel();
+                vm.Departamentos = await _departamento.ListarAsync();
+                vm.Vendedor = vendedor;
                 return View(vm);
             }
 
@@ -122,7 +129,7 @@ namespace VendasMVC.Controllers
 
             try
             {
-                _servico.Atualizar(vendedor);
+                await _servico.AtualizarAsync(vendedor);
                 return RedirectToAction("Index");
             }
             catch (NotFoundException)
@@ -144,13 +151,13 @@ namespace VendasMVC.Controllers
             return View(erro);
         }
 
-        private VendedorViewModel MontaViewModel(Vendedor vendedor)
-        {
-            VendedorViewModel vm = new VendedorViewModel();
-            vm.Departamentos = _departamento.Listar();
-            vm.Vendedor = vendedor;
+        //private async Task<VendedorViewModel> MontaViewModel(Vendedor vendedor)
+        //{
+        //    VendedorViewModel vm = new VendedorViewModel();
+        //    vm.Departamentos = await _departamento.ListarAsync();
+        //    vm.Vendedor = vendedor;
 
-            return vm;
-        }
+        //    return vm;
+        //}
     }
 }
