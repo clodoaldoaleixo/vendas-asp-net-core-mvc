@@ -79,14 +79,14 @@ namespace VendasMVC.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            if (id == null)
+            if(id == null)
             {
                 return NotFound();
             }
 
             var obj = _servico.Pesquisar(id);
 
-            if(obj == null)
+            if (obj == null)
             {
                 return NotFound();
             }
@@ -96,15 +96,21 @@ namespace VendasMVC.Controllers
             vm.Vendedor = obj;
 
             return View(vm);
+
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Vendedor obj)
+        public IActionResult Edit(int id, Vendedor vendedor)
         {
+            if (id != vendedor.Id)
+            {
+                return BadRequest();
+            }
+
             try
             {
-                _servico.Atualizar(obj);
+                _servico.Atualizar(vendedor);
                 return RedirectToAction("Index");
             }
             catch (NotFoundException)
@@ -113,7 +119,7 @@ namespace VendasMVC.Controllers
             }
             catch (DbConcorrenciaException)
             {
-                return BadRequest();
+                return NotFound();
             }
         }
 
