@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<div class="row">
+
+    <div class="col-md-6">
+        <form class="form-horizontal" asp-action="BuscaSimples">
+            <button type="submit" class="btn btn-primary">Pesquisa Simples</button>
+        </form>
+    </div>
+
+    <div class="col-md-6">
+        <form class="form-horizontal" asp-action="BuscaGrupo">
+            <button type="submit" class="btn btn-primary">Pesquisa Grupo</button>
+        </form>
+    </div>
+
+</div>
