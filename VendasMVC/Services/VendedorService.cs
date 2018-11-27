@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using VendasMVC.Models;
 using VendasMVC.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using VendasMVC.Services.Exceptions;
 
 namespace VendasMVC.Services
 {

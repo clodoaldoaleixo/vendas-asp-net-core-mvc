@@ -23,16 +23,21 @@ namespace VendasMVC.Controllers
         
         public async Task<IActionResult> BuscaSimples(DateTime? dtInicial, DateTime? dtFinal)
         {
-            ViewData["dtInicial"] = dtInicial.Value.ToString("yyyy/MM/dd");
-            ViewData["dtFinal"] = dtFinal.Value.ToString("yyyy/MM/dd");
+            ViewData["dtInicial"] = dtInicial.Value.ToString("dd/MM/yyyy");
+            ViewData["dtFinal"] = dtFinal.Value.ToString("dd/MM/yyyy");
 
             var retorno =  await _vendasService.ListarPorDataAsync(dtInicial, dtFinal);
             return View(retorno);
         }
 
-        public IActionResult BuscaGrupo()
+        public async Task<IActionResult> BuscaGrupo(DateTime? dtInicial, DateTime? dtFinal)
         {
-            return View();
+            ViewData["dtInicial"] = dtInicial.Value.ToString("dd/MM/yyyy");
+            ViewData["dtFinal"] = dtFinal.Value.ToString("dd/MM/yyyy");
+
+            var retorno = await _vendasService.ListarAgrupadoPorDataAsync(dtInicial, dtFinal);
+            return View(retorno);
         }
+        
     }
 }

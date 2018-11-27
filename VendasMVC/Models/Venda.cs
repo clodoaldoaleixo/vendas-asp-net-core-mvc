@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace VendasMVC.Models
 {
@@ -22,7 +23,12 @@ namespace VendasMVC.Models
         }
 
         public int Id { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Data { get; set; }
+    
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public double Valor { get; set; }
         public StatusVenda Status { get; set; }
         public Vendedor Vendedor { get; set; }

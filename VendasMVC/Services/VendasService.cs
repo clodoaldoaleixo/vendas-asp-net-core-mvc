@@ -32,5 +32,26 @@ namespace VendasMVC.Services
 
             return await consulta.Include(x => x.Vendedor).Include(x => x.Vendedor.Departamento).OrderByDescending(x => x.Data).ToListAsync();
         }
+
+        public async Task<List< IGrouping<Departamento,Venda>>> ListarAgrupadoPorDataAsync(DateTime? dtInicial, DateTime? dtFinal)
+        {
+            var consulta = from obj in _contexto.Venda select obj;
+
+            if (dtInicial != null)
+            {
+                consulta = consulta.Where(x => x.Data >= dtInicial);
+            }
+
+            if (dtFinal != null)
+            {
+                consulta = consulta.Where(x => x.Data <= dtFinal);
+            }
+
+            return await consulta.Include(x => x.Vendedor)
+                                 .Include(x => x.Vendedor.Departamento)
+                                 .OrderByDescending(x => x.Data)
+                                 .GroupBy(x => x.Vendedor.Departamento)
+                                 .ToListAsync();
+        }
     }
 }
