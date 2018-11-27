@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace VendasMVC.Models
 {
+    [Serializable]
     public class Venda
     {
         public Venda()

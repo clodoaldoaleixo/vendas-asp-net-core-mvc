@@ -25,6 +25,7 @@ namespace VendasMVC.Models
 
         public int Id { get; set; }
 
+        [Display(Name = "Nome do Vendedor")]
         [Required(ErrorMessage ="{0} Obrigatório")]
         [StringLength(60, MinimumLength = 3,ErrorMessage = "Campo {0} tem máximo de caracteres é 60 e o mínimo 3")]
         public string Nome { get; set; }

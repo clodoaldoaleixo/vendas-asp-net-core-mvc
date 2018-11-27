@@ -1,15 +1,26 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Pesquisar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>@ViewData["Title"]</h2>
 
 <div class="row">
 
     <div class="col-md-6">
         <form class="form-horizontal" asp-action="BuscaSimples">
+
+            <fieldset>
+
+                <legend>Pesquisa Simples</legend>
+
+                Data Inicial: <input type="date" name="dtInicial" autofocus="autofocus"/><br /><br />
+                Data Inicial: <input type="date" name="dtFinal" />
+
+            </fieldset>
+            
+            <br />
             <button type="submit" class="btn btn-primary">Pesquisa Simples</button>
         </form>
     </div>
